@@ -3,12 +3,11 @@ import json
 
 
 def clean(pal):
-	pal = pal.replace("!", " ")
-	pal = pal.replace("?", " ")
-	pal = pal.replace(",", " ")
-	pal = pal.replace(".", " ")
-	pal = pal.replace(":", " ")
-	pal = pal.strip()
+	pal = pal.replace("!", "")
+	pal = pal.replace("?", "")
+	pal = pal.replace(",", "")
+	pal = pal.replace(".", "")
+	pal = pal.replace(":", "")
 	return pal
 
 
@@ -26,8 +25,10 @@ def main():
 	for tweet in tweets:
 		if u'text' in tweet:
 			aux = clean(tweet[u'text'].encode("utf-8"))
-			words = aux.split(" ")
+			#print aux
+			words = aux.split()
 			for word in words:
+				#print word
 				if word in word_freq:
 					word_freq[word] =+ 1
 					total_words += 1
@@ -38,7 +39,10 @@ def main():
 	#print total_words
 
 	for token in word_freq:
-		print "%s %s " % (token, (word_freq[token]/float(total_words)))
+		if token.isalpha():
+			s = "%s %s" % (token, (word_freq[token]/float(total_words)))
+			#print len(s.split())
+			print "%s %s" % (token, (word_freq[token]/float(total_words)))
 
 if __name__ == '__main__':
 	main()
