@@ -8,6 +8,7 @@ def clean(pal):
 	pal = pal.replace(",", " ")
 	pal = pal.replace(".", " ")
 	pal = pal.replace(":", " ")
+	pal = pal.strip()
 	return pal
 
 
