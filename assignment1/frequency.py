@@ -21,26 +21,23 @@ def main():
 	for line in tweet_file:
 		tweets.append(json.loads(line))  # Each tweet is parsed from JSON to a dictionary
 
-	total_words = 0
+	total_words = 0  #Total count of words
 	for tweet in tweets:
 		if u'text' in tweet:
 			aux = clean(tweet[u'text'].encode("utf-8"))
-			#print aux
 			words = aux.split()
-			for word in words:
-				#print word
-				if word in word_freq:
+			for word in words:	#for each word in the tweet, we check if it already exists within the dictionary of words
+				if word in word_freq:	#if it exists, we add 1 to the value
 					word_freq[word] =+ 1
 					total_words += 1
-				else:
+				else:	#if not, we add it to the dictionary with a value of 1
 					word_freq[word] = 1
 					total_words += 1
 
-	#print total_words
 
 	for token in word_freq:
 		if token.isalpha():
-			s = "%s %s" % (token, (word_freq[token]/float(total_words)))
+			#s = "%s %s" % (token, (word_freq[token]/float(total_words)))   debugging purposes
 			#print len(s.split())
 			print "%s %s" % (token, (word_freq[token]/float(total_words)))
 
