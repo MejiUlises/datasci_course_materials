@@ -9,11 +9,11 @@ def main():
     sent_file = open(sys.argv[1])
     tweet_file = open(sys.argv[2])
 
-    scores = {}      # initialize an empty dictionary to store the words and values associated with each word
-    tweets = []      # initialize an empty list for the tweets
-    texts = []       # list of text of each tweet
-    words = []       # list of words of each text in each tweet
-    sent_scores = [] #list of the scores for each text
+    scores = {}       # initialize an empty dictionary to store the words and values associated with each word
+    tweets = []       # initialize an empty list for the tweets
+    texts = []        # list of text of each tweet
+    words = []        # list of words of each text in each tweet
+    sent_scores = []  # list of the scores for each text
 
     #We fill the score dictionary wih the data in the FINN-111 file and store it in a dictionary
     for line in sent_file:
