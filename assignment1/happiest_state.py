@@ -60,7 +60,7 @@ states = {'AK': 'Alaska',
 		  'WV': 'West Virginia',
 		  'WY': 'Wyoming'}
 
-
+#function to clean the tweet
 def clean_tweet(x):
 	x = x.replace("!", "")
 	x = x.replace("?", "")
@@ -70,6 +70,7 @@ def clean_tweet(x):
 	return x
 
 
+#function that returns the tweet. It is based on the tweet_sentiment.py file
 def rate_tweet(x, dicti):
 	tweet_score = 0
 	words = []  # list of words of a single tweet x
@@ -79,9 +80,8 @@ def rate_tweet(x, dicti):
 	words = msg.split(" ")
 
 	for word in words:
-		if word in dicti:
+		if word in dicti:	#for each word in the tweet, it looks up the score and add it to the tweet_score
 			tweet_score += dicti[word]
-	#print tweet_score
 
 	return tweet_score
 
@@ -103,23 +103,24 @@ def main():
 	for line in tweet_file:
 		tweets.append(json.loads(line))  # Each tweet is parsed from JSON to a dictionary
 
-	# print scores
 
+	#the lugar variable is something like this: "Georgia, USA" or "Los Angeles, LA", that's why I split the string
+	#so I can check first if the "LA" exists within the states dictionary. If that's no the case, we lookup the index of
+	#the georgia value and add it to the correspondent place in the dictionary
 	for tweet in tweets:
 		if u'place' in tweet:
-			if not (tweet[u'place'] is None):
-				if tweet[u'place'][u'country'].encode("utf-8") == "United States":
-					# print tweet[u'place'][u'name']
-					lugar = tweet[u'place'][u'full_name'].split(",")
-					lugar[0] = str(lugar[0]).strip()
-					lugar[1] = str(lugar[1]).strip()
-					if lugar[1] in states.keys():
-						tweet_score = rate_tweet(tweet, scores)
+			if not (tweet[u'place'] is None): #All the tweets that have this field are geocoded, so we select on these first
+				if tweet[u'place'][u'country'].encode("utf-8") == "United States":  #We select only the ones in the US
+					lugar = tweet[u'place'][u'full_name'].split(",") #the place is encoded like this XXX, State, but not all of them
+					lugar[0] = str(lugar[0]).strip()  #cast and clean the string
+					lugar[1] = str(lugar[1]).strip()  #cast and clean the string
+					if lugar[1] in states.keys():  #if the state is in the states dictionary we rate the tweet and
+						tweet_score = rate_tweet(tweet, scores)  #add it to the right spot in the dictionary
 						if lugar[1] in happiest_state:
 							happiest_state[lugar[1]] += tweet_score
 						else:
 							happiest_state[lugar[1]] = tweet_score
-					elif lugar[0] in states.values():
+					elif lugar[0] in states.values():  #we check the same as above but with the second argument
 						tweet_score = rate_tweet(tweet, scores)
 						if states.keys()[states.values().index(lugar[0])] in happiest_state:
 							happiest_state[states.keys()[states.values().index(lugar[0])]] += tweet_score
