@@ -126,7 +126,7 @@ def main():
 						else:
 							happiest_state[states.keys()[states.values().index(lugar[0])]] = tweet_score
 
-	print str(happiest_state.keys()[max(happiest_state.values())]) + " " + str(max(happiest_state.values()))
+	print "%s" % str(happiest_state.keys()[max(happiest_state.values())])
 
 if __name__ == '__main__':
 	main()
