@@ -1,0 +1,47 @@
+.output select.txt
+SELECT COUNT (*)
+FROM Frequency
+WHERE docid="10398_txt_earn";
+
+.output select_project.txt
+SELECt COUNT (*)
+FROM Frequency
+WHERE docid="10398_txt_earn" and count=1;
+
+.output union.txt
+select count (*) 
+FROM (
+	select term 
+	from Frequency 
+	where docid="10398_txt_earn" and count=1
+	union
+	select term 
+	from Frequency 
+	where docid="925_txt_trade" and count=1
+);
+
+.output count.txt
+SELECT count (docid) 
+FROM Frequency
+WHERE	 term="parliament";
+
+.output two_words.txt
+SELECT DISTINCT COUNT (*)
+FROM (
+	SELECT docid
+	FROM Frequency
+	WHERE term="transactions"
+	INTERSECT
+	SELECT docid
+	FROM Frequency
+	WHERE term="world"
+	);
+
+.output big_documents.txt
+SELECT DISTINCT COUNT (docid)
+FROM (
+	SELECT docid, sum(count)
+	FROM Frequency
+	GROUP BY docid
+	HAVING sum(count)>300)
+;
